@@ -1,10 +1,10 @@
 {
   "name": "parkingrules-app",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync start --server 'public' --files 'public/css/*.css, public/index.html, public/js/*.js'"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,17 @@
     "express": "^4.21.2",
     "node-fetch": "^3.3.2",
     "stripe": "^17.5.0"
-  }
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taylorpemberton/parkingrules.git"
+  },
+  "bugs": {
+    "url": "https://github.com/taylorpemberton/parkingrules/issues"
+  },
+  "homepage": "https://github.com/taylorpemberton/parkingrules#readme",
+  "description": ""
 }
