@@ -1,0 +1,121 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkingRules Pro - Street Cleaning Schedules</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .city-section { display: none; }
+        .city-section.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">ParkingRules Pro</span>
+                </div>
+                <a href="mailto:support@parkingrules.com" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    Contact Support
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">
+                Street Cleaning Schedule Lookup
+            </h1>
+            
+            <form action="/create-checkout-session" method="POST" class="space-y-8">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select City</label>
+                    <select 
+                        id="citySelect" 
+                        name="city" 
+                        required
+                        class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    >
+                        <option value="">Choose your city...</option>
+                        <option value="nyc" class="font-medium">New York City</option>
+                        <option disabled class="text-gray-400 italic">Chicago (Coming Soon)</option>
+                        <option disabled class="text-gray-400 italic">San Francisco (Q4 2024)</option>
+                        <option disabled class="text-gray-400 italic">Los Angeles (Q1 2025)</option>
+                    </select>
+                </div>
+
+                <!-- NYC Specific Fields -->
+                <div id="nycFields" class="city-section space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Borough</label>
+                        <select 
+                            name="region"
+                            class="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        >
+                            <option value="manhattan">Manhattan</option>
+                            <option value="brooklyn">Brooklyn</option>
+                            <option value="queens">Queens</option>
+                            <option value="bronx">Bronx</option>
+                            <option value="staten island">Staten Island</option>
+                        </select>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="text-sm font-semibold text-blue-800 mb-2">New York City Note</h3>
+                        <p class="text-sm text-blue-700">
+                            ASP schedules vary by borough and season. We provide real-time updates from NYC 311 data.
+                        </p>
+                    </div>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                    Get Schedule - $5
+                </button>
+            </form>
+
+            <div class="mt-8 text-center text-sm text-gray-500">
+                <p>Need help? <a href="mailto:support@parkingrules.com" class="text-blue-600 hover:underline">Contact our team</a></p>
+                <div class="mt-4 flex items-center justify-center space-x-4">
+                    <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-gray-700">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('citySelect').addEventListener('change', (e) => {
+            document.querySelectorAll('.city-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            if (e.target.value) {
+                const cityFields = document.getElementById(`${e.target.value}Fields`);
+                if (cityFields) cityFields.classList.add('active');
+            }
+        });
+
+        document.getElementById('citySelect').addEventListener('mousedown', (e) => {
+            const option = e.target;
+            if (option.disabled) {
+                e.preventDefault();
+                const cityName = option.textContent.split('(')[0].trim();
+                alert(`🚧 ${cityName} support is coming soon! Sign up for updates at support@parkingrules.com`);
+            }
+        });
+    </script>
+</body>
+</html>
